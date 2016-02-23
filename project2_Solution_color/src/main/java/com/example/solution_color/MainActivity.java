@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity  {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Bitmap currentBg, newBg;
+        Bitmap currentBg, sketchedBG, coloredBG;
         switch (item.getItemId()) {
 
             case R.id.action_settings:
@@ -52,14 +52,16 @@ public class MainActivity extends AppCompatActivity  {
                 break;
             case R.id.colorize:
                 currentBg = BitMap_Helpers.copyBitmap(background.getDrawable());
-                newBg     = BitMap_Helpers.colorBmp(currentBg, 125);
-                changePhoto(newBg);
+                sketchedBG    = BitMap_Helpers.thresholdBmp(currentBg, 50);
+                coloredBG     = BitMap_Helpers.colorBmp(currentBg, 125);
+                BitMap_Helpers.merge(coloredBG,sketchedBG); //colored BG merged w/ sketch
+                changePhoto(coloredBG); // change to merged picture
 
                 break;
             case R.id.black_and_white:
                 currentBg = BitMap_Helpers.copyBitmap(background.getDrawable());
-                newBg     = BitMap_Helpers.thresholdBmp(currentBg, 50);
-                changePhoto(newBg);
+                sketchedBG     = BitMap_Helpers.thresholdBmp(currentBg, 50);
+                changePhoto(sketchedBG);
 
 
                 break;
