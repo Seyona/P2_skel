@@ -42,6 +42,13 @@ public class MainActivity extends AppCompatActivity  {
         background = (ImageView) findViewById(R.id.background);
         getPref(); // get preferences if there are any
 
+        Bundle extras = getIntent().getExtras();
+
+        if (extras != null) {
+            //add custom settings from settings activity
+
+
+        }
         if (!path_To_Picture.equals(DEFAULT_PATH)) { //if the current path is not ""
             changeBackgroundImage(Camera_Helpers.loadAndScaleImage(path_To_Picture,
                     background.getWidth(), background.getHeight()));
