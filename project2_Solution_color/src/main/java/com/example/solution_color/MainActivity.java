@@ -11,9 +11,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.library.bitmap_utilities.BitMap_Helpers;
+import com.library.bitmap_utilities.ManipBitmap;
+
 public class MainActivity extends AppCompatActivity  {
 
     private ImageView camera, background;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +25,7 @@ public class MainActivity extends AppCompatActivity  {
 
         camera = (ImageView) findViewById(R.id.camera);
         background = (ImageView) findViewById(R.id.background);
+
 
         setContentView(R.layout.activity_main);
     }
@@ -44,9 +49,12 @@ public class MainActivity extends AppCompatActivity  {
                 break;
             case R.id.colorize:
                 //do colorize stuff
+
                 break;
             case R.id.black_and_white:
-                //do black and white
+                Bitmap currentBg = BitMap_Helpers.copyBitmap(background.getDrawable());
+
+
                 break;
             case R.id.restore:
                 background.setImageResource(R.drawable.gutters);
