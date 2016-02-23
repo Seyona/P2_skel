@@ -3,9 +3,11 @@ package com.example.solution_color;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
+import android.graphics.Picture;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,7 +15,8 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.library.bitmap_utilities.BitMap_Helpers;
-import com.library.bitmap_utilities.ManipBitmap;
+
+import java.io.File;
 
 public class MainActivity extends AppCompatActivity  {
 
@@ -55,19 +58,19 @@ public class MainActivity extends AppCompatActivity  {
                 sketchedBG    = BitMap_Helpers.thresholdBmp(currentBg, 50);
                 coloredBG     = BitMap_Helpers.colorBmp(currentBg, 125);
                 BitMap_Helpers.merge(coloredBG,sketchedBG); //colored BG merged w/ sketch
-                changePhoto(coloredBG); // change to merged picture
+                changeBackgroundImage(coloredBG); // change to merged picture
 
                 break;
             case R.id.black_and_white:
                 currentBg = BitMap_Helpers.copyBitmap(background.getDrawable());
                 sketchedBG     = BitMap_Helpers.thresholdBmp(currentBg, 50);
-                changePhoto(sketchedBG);
+                changeBackgroundImage(sketchedBG);
 
 
                 break;
             case R.id.restore:
                 background.setImageResource(R.drawable.gutters);
-                changePhoto(null);
+                changeBackgroundImage(null);
 
 
                 break;
@@ -78,10 +81,28 @@ public class MainActivity extends AppCompatActivity  {
     }
 
     public void takePhoto(View view) {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        File outFile = Environment.getExternalStorageDirectory();
+        Uri  output  = Uri.fromFile(outFile);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT,output);
+
+        startActivityForResult(intent, 1);
+
 
     }
 
-    private void changePhoto(Bitmap photo) {
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+
+            } else if (resultCode == RESULT_CANCELED) {
+
+            }
+        }
+    }
+
+    private void changeBackgroundImage(Bitmap photo) {
         if (photo != null) background.setImageBitmap(photo);
         background.setScaleType(ImageView.ScaleType.FIT_CENTER);
         background.setScaleType(ImageView.ScaleType.FIT_XY);
