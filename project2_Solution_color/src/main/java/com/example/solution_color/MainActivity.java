@@ -29,6 +29,20 @@ public class MainActivity extends AppCompatActivity  {
                 Intent myIntent = new Intent(this, SettingsActivity.class);
                 startActivity(myIntent);
                 break;
+            case R.id.action_share:
+                //do share stuff
+                break;
+            case R.id.colorize:
+                //do colorize stuff
+                break;
+            case R.id.black_and_white:
+                //do black and white
+                break;
+            case R.id.restore:
+                //restore to original
+
+
+                break;
             default:
                 break;
         }
