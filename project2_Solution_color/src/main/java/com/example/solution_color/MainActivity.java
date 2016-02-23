@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Camera;
-import android.graphics.Picture;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -20,6 +18,7 @@ import android.widget.ImageView;
 import com.library.bitmap_utilities.BitMap_Helpers;
 
 import java.io.File;
+import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity  {
 
@@ -29,8 +28,10 @@ public class MainActivity extends AppCompatActivity  {
 
     private final String PREF_FILE_NAME = "Preferences";
     private final String DEFAULT_PATH   = "";
+    private final String PHOTO_NAME_PREFIX    = "Photo";
+    private final String PHOTO_NAME_SUFFIX    = ".jpg";
 
-    private String Path_To_Picture = DEFAULT_PATH;
+    private String path_To_Picture = DEFAULT_PATH;
 
 
     @Override
@@ -41,8 +42,8 @@ public class MainActivity extends AppCompatActivity  {
         background = (ImageView) findViewById(R.id.background);
         getPref(); // get preferences if there are any
 
-        if (!Path_To_Picture.equals(DEFAULT_PATH)) { //if the current path is not ""
-            changeBackgroundImage(Camera_Helpers.loadAndScaleImage(Path_To_Picture,
+        if (!path_To_Picture.equals(DEFAULT_PATH)) { //if the current path is not ""
+            changeBackgroundImage(Camera_Helpers.loadAndScaleImage(path_To_Picture,
                     background.getWidth(), background.getHeight()));
         }
 
@@ -69,6 +70,17 @@ public class MainActivity extends AppCompatActivity  {
                 break;
             case R.id.action_share:
                 //do share stuff
+                Intent shareIntent = new Intent();
+
+                shareIntent.setAction(Intent.ACTION_SEND);
+
+                shareIntent.putExtra(Intent.EXTRA_TITLE, R.string.shareTitle);
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT, R.string.sharemessage);
+                shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(path_To_Picture));
+                shareIntent.setType("image/jpg");
+
+                startActivity(shareIntent);
+
                 break;
             case R.id.colorize:
                 currentBg = BitMap_Helpers.copyBitmap(background.getDrawable());
@@ -88,7 +100,7 @@ public class MainActivity extends AppCompatActivity  {
             case R.id.restore:
                 removeSavedPhoto();
                 background.setImageResource(R.drawable.gutters);
-                Path_To_Picture = "";
+                path_To_Picture = "";
                 changeBackgroundImage(null);
 
 
@@ -99,10 +111,11 @@ public class MainActivity extends AppCompatActivity  {
         return true;
     }
 
-    public void takePhoto(View view) {
+    public void takePhoto(View view) throws IOException {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        File outFile = Environment.getExternalStorageDirectory();
-        Uri  output  = Uri.fromFile(outFile);
+        File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        File image      = File.createTempFile(PHOTO_NAME_PREFIX,PHOTO_NAME_SUFFIX,storageDir);
+        Uri  output     = Uri.fromFile(image);
         intent.putExtra(MediaStore.EXTRA_OUTPUT,output);
 
         startActivityForResult(intent, TAKE_PICTURE);
@@ -113,9 +126,9 @@ public class MainActivity extends AppCompatActivity  {
      * if it is not the default path then the photo is removed
      */
     private void removeSavedPhoto() {
-        if (!Path_To_Picture.equals(DEFAULT_PATH)) {
-            Camera_Helpers.delSavedImage(Path_To_Picture);
-            Path_To_Picture = DEFAULT_PATH;
+        if (!path_To_Picture.equals(DEFAULT_PATH)) {
+            Camera_Helpers.delSavedImage(path_To_Picture);
+            path_To_Picture = DEFAULT_PATH;
         }
     }
 
@@ -125,7 +138,7 @@ public class MainActivity extends AppCompatActivity  {
            switch (resultCode) {
                case RESULT_OK:
                    removeSavedPhoto();
-                   Path_To_Picture = data.getData().getPath();
+                   path_To_Picture = data.getData().getPath();
                    //File picture = new File(data.getData().getPath());
                    int targetW  = background.getWidth();
                    int targetH  = background.getHeight();
@@ -133,7 +146,7 @@ public class MainActivity extends AppCompatActivity  {
                    // get dimensions of bitmap
                    BitmapFactory.Options bmOps = new BitmapFactory.Options();
                    bmOps.inJustDecodeBounds = true;
-                   BitmapFactory.decodeFile(Path_To_Picture);
+                   BitmapFactory.decodeFile(path_To_Picture);
                    int photoW = bmOps.outWidth;
                    int photoH = bmOps.outHeight;
 
@@ -145,9 +158,9 @@ public class MainActivity extends AppCompatActivity  {
                    bmOps.inSampleSize = scaleFactor;
                    //bmOps.inPurgeable = true;
 
-                   Bitmap bitmap = BitmapFactory.decodeFile(Path_To_Picture, bmOps);
+                   Bitmap bitmap = BitmapFactory.decodeFile(path_To_Picture, bmOps);
                    background.setImageBitmap(bitmap);
-                   Camera_Helpers.saveProcessedImage(bitmap, Path_To_Picture);
+                   Camera_Helpers.saveProcessedImage(bitmap, path_To_Picture);
                    savePref();
                    break;
 
@@ -171,7 +184,7 @@ public class MainActivity extends AppCompatActivity  {
     public void getPref() {
         SharedPreferences settings = getSharedPreferences(PREF_FILE_NAME, MODE_PRIVATE);
 
-        Path_To_Picture = settings.getString("Current Picture Path", DEFAULT_PATH);
+        path_To_Picture = settings.getString("Current Picture Path", DEFAULT_PATH);
     }
 
     public void savePref() {
@@ -179,7 +192,7 @@ public class MainActivity extends AppCompatActivity  {
 
         SharedPreferences.Editor editor = settings.edit();
 
-        editor.putString("Current Picture Path", Path_To_Picture);
+        editor.putString("Current Picture Path", path_To_Picture);
         editor.commit();
     }
 }

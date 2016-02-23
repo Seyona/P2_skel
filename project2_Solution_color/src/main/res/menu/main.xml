@@ -9,14 +9,14 @@
         android:id="@+id/action_share"
         android:orderInCategory="300"
         android:icon="@android:drawable/ic_menu_share"
-        app:showAsAction="always"
+        app:showAsAction="ifRoom"
         android:title="@string/action_share"/>
 
     <item
         android:id="@+id/colorize"
         android:orderInCategory="200"
         android:icon="@android:drawable/ic_menu_view"
-        app:showAsAction="always"
+        app:showAsAction="ifRoom"
         android:title="@string/colorize"
         />
 
@@ -24,7 +24,7 @@
         android:id="@+id/black_and_white"
         android:orderInCategory="100"
         android:icon="@android:drawable/ic_menu_edit"
-        app:showAsAction="always"
+        app:showAsAction="ifRoom"
         android:title="@string/sketch"
         />
 
@@ -32,7 +32,7 @@
         android:id="@+id/restore"
         android:orderInCategory="50"
         android:icon="@android:drawable/ic_menu_revert"
-        app:showAsAction="always"
+        app:showAsAction="ifRoom"
         android:title="@string/reset"
         />
 
