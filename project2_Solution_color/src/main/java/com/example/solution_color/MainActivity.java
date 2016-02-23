@@ -100,7 +100,6 @@ public class MainActivity extends AppCompatActivity  {
             case R.id.restore:
                 removeSavedPhoto();
                 background.setImageResource(R.drawable.gutters);
-                path_To_Picture = "";
                 changeBackgroundImage(null);
 
 
