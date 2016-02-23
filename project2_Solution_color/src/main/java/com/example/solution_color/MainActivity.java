@@ -2,15 +2,25 @@ package com.example.solution_color;
 
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 
 public class MainActivity extends AppCompatActivity  {
+
+    private ImageView camera, background;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        camera = (ImageView) findViewById(R.id.camera);
+        background = (ImageView) findViewById(R.id.background);
 
         setContentView(R.layout.activity_main);
     }
@@ -39,7 +49,9 @@ public class MainActivity extends AppCompatActivity  {
                 //do black and white
                 break;
             case R.id.restore:
-                //restore to original
+                background.setImageResource(R.drawable.gutters);
+                background.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                background.setScaleType(ImageView.ScaleType.FIT_XY);
 
 
                 break;
@@ -49,5 +61,12 @@ public class MainActivity extends AppCompatActivity  {
         return true;
     }
 
+    public void takePhoto(View view) {
+
+    }
+
+    private void changePhoto(View view, Bitmap photo) {
+        background.setImageBitmap(photo);
+    }
 }
 
