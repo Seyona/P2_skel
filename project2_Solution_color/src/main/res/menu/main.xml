@@ -1,5 +1,35 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity">
+
+    <item
+        android:id="@+id/action_share"
+        android:orderInCategory="300"
+        android:icon="@android:drawable/ic_menu_share"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/colorize"
+        android:orderInCategory="200"
+        android:icon="@android:drawable/ic_menu_view"
+        app:showAsAction="always"
+        />
+
+    <item
+        android:id="@+id/black_and_white"
+        android:orderInCategory="100"
+        android:icon="@android:drawable/ic_menu_edit"
+        app:showAsAction="always"
+        />
+
+    <item
+        android:id="@+id/restore"
+        android:orderInCategory="50"
+        android:icon="@android:drawable/ic_menu_revert"
+        app:showAsAction="always"
+        />
+
 
     <item
         android:id="@+id/action_settings"
