@@ -3,6 +3,7 @@ package com.example.solution_color;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -39,7 +40,9 @@ public class MainActivity extends AppCompatActivity  {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Bitmap currentBg, newBg;
         switch (item.getItemId()) {
+
             case R.id.action_settings:
                 Intent myIntent = new Intent(this, SettingsActivity.class);
                 startActivity(myIntent);
@@ -48,18 +51,21 @@ public class MainActivity extends AppCompatActivity  {
                 //do share stuff
                 break;
             case R.id.colorize:
-                //do colorize stuff
+                currentBg = BitMap_Helpers.copyBitmap(background.getDrawable());
+                newBg     = BitMap_Helpers.colorBmp(currentBg, 125);
+                changePhoto(newBg);
 
                 break;
             case R.id.black_and_white:
-                Bitmap currentBg = BitMap_Helpers.copyBitmap(background.getDrawable());
+                currentBg = BitMap_Helpers.copyBitmap(background.getDrawable());
+                newBg     = BitMap_Helpers.thresholdBmp(currentBg, 50);
+                changePhoto(newBg);
 
 
                 break;
             case R.id.restore:
                 background.setImageResource(R.drawable.gutters);
-                background.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                background.setScaleType(ImageView.ScaleType.FIT_XY);
+                changePhoto(null);
 
 
                 break;
@@ -73,8 +79,10 @@ public class MainActivity extends AppCompatActivity  {
 
     }
 
-    private void changePhoto(View view, Bitmap photo) {
-        background.setImageBitmap(photo);
+    private void changePhoto(Bitmap photo) {
+        if (photo != null) background.setImageBitmap(photo);
+        background.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        background.setScaleType(ImageView.ScaleType.FIT_XY);
     }
 }
 
