@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity  {
     private final String PHOTO_NAME_SUFFIX    = ".jpg";
 
     private String path_To_Picture = DEFAULT_PATH;
+    private Uri    currentImage;
 
 
     @Override
@@ -155,7 +156,9 @@ public class MainActivity extends AppCompatActivity  {
                case RESULT_OK:
                    removeSavedPhoto();
                    Uri image = data.getData();
-                   path_To_Picture = image.getPath();
+                   File tempFile = new File(image.getPath());
+                   path_To_Picture = tempFile.getAbsolutePath();
+
 
                    //path_To_Picture = data.getData().getPath();
                    //File picture = new File(data.getData().getPath());
