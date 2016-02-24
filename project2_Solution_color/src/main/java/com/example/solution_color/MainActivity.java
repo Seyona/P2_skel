@@ -5,11 +5,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,8 +25,9 @@ import java.io.IOException;
 public class MainActivity extends AppCompatActivity  {
 
     private ImageView camera, background;
+    Toolbar toolbar;
 
-    private final int TAKE_PICTURE = 1;
+    private final int TAKE_PICTURE = 100;
 
     private final String PREF_FILE_NAME = "Preferences";
     private final String DEFAULT_PATH   = "";
@@ -37,9 +40,17 @@ public class MainActivity extends AppCompatActivity  {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
         camera = (ImageView) findViewById(R.id.camera);
         background = (ImageView) findViewById(R.id.background);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setVisibility(View.VISIBLE);
+
+        //Lets remove the title
+        //getSupportActionBar().setDisplayShowTitleEnabled(false);
+
         getPref(); // get preferences if there are any
 
         Bundle extras = getIntent().getExtras();
@@ -52,7 +63,7 @@ public class MainActivity extends AppCompatActivity  {
                     background.getWidth(), background.getHeight()));
         }
 
-        setContentView(R.layout.activity_main);
+
     }
 
 
@@ -76,7 +87,6 @@ public class MainActivity extends AppCompatActivity  {
             case R.id.action_share:
                 //do share stuff
                 Intent shareIntent = new Intent();
-
                 shareIntent.setAction(Intent.ACTION_SEND);
 
                 shareIntent.putExtra(Intent.EXTRA_TITLE, R.string.shareTitle);
@@ -88,7 +98,7 @@ public class MainActivity extends AppCompatActivity  {
 
                 break;
             case R.id.colorize:
-                currentBg = BitMap_Helpers.copyBitmap(background.getDrawable());
+                currentBg     = BitMap_Helpers.copyBitmap(background.getDrawable());
                 sketchedBG    = BitMap_Helpers.thresholdBmp(currentBg, 50);
                 coloredBG     = BitMap_Helpers.colorBmp(currentBg, 125);
                 BitMap_Helpers.merge(coloredBG,sketchedBG); //colored BG merged w/ sketch
@@ -96,7 +106,7 @@ public class MainActivity extends AppCompatActivity  {
 
                 break;
             case R.id.black_and_white:
-                currentBg = BitMap_Helpers.copyBitmap(background.getDrawable());
+                currentBg      = BitMap_Helpers.copyBitmap(background.getDrawable());//BitMap_Helpers.copyBitmap(background.getDrawable());
                 sketchedBG     = BitMap_Helpers.thresholdBmp(currentBg, 50);
                 changeBackgroundImage(sketchedBG);
 
@@ -138,7 +148,7 @@ public class MainActivity extends AppCompatActivity  {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 1) {
+        if (requestCode == TAKE_PICTURE) {
            switch (resultCode) {
                case RESULT_OK:
                    removeSavedPhoto();
