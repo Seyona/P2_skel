@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity  {
         }
         if (!path_To_Picture.equals(DEFAULT_PATH)) { //if the current path is not ""
             changeBackgroundImage(Camera_Helpers.loadAndScaleImage(path_To_Picture,
-                    background.getWidth(), background.getHeight()));
+                    background.getHeight(), background.getWidth()));
         }
 
 
@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity  {
     public void takePhoto(View view) throws IOException {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-        File image      = File.createTempFile(PHOTO_NAME_PREFIX,PHOTO_NAME_SUFFIX,storageDir);
+        File image      = File.createTempFile(PHOTO_NAME_PREFIX, PHOTO_NAME_SUFFIX, storageDir);
         //Uri  output     = Uri.fromFile(image);
         intent.putExtra(MediaStore.EXTRA_OUTPUT,image);
 
@@ -175,14 +175,15 @@ public class MainActivity extends AppCompatActivity  {
                    int photoH = bmOps.outHeight;
 
                    // Determine how much to scale down the image
-                   int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+                   //int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
 
                    // Decode the image file into a Bitmap sized to fill the View
-                   bmOps.inJustDecodeBounds = false;
-                   bmOps.inSampleSize = scaleFactor;
+                   //bmOps.inJustDecodeBounds = false;
+                   //bmOps.inSampleSize = scaleFactor;
                    //bmOps.inPurgeable = true;
 
-                   Bitmap bitmap = BitmapFactory.decodeFile(path_To_Picture, bmOps);
+                   //Bitmap bitmap = BitmapFactory.decodeFile(path_To_Picture, bmOps);
+                   Bitmap bitmap = Camera_Helpers.loadAndScaleImage(path_To_Picture, targetH, targetW);
                    //background.setImageBitmap(bitmap);
                    changeBackgroundImage(bitmap);
                    Camera_Helpers.saveProcessedImage(bitmap, path_To_Picture);
