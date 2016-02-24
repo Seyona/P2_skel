@@ -39,8 +39,18 @@ public class MainActivity extends AppCompatActivity  {
 
 
     @Override
+    protected void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putString("image_url", currentImage.toString());
+
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+            currentImage = Uri.parse(savedInstanceState.getString("image_url"));
+        }
         setContentView(R.layout.activity_main);
 
         camera = (ImageView) findViewById(R.id.camera);
@@ -50,7 +60,7 @@ public class MainActivity extends AppCompatActivity  {
         toolbar.setVisibility(View.VISIBLE);
 
         //Lets remove the title
-        //getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         getPref(); // get preferences if there are any
 
