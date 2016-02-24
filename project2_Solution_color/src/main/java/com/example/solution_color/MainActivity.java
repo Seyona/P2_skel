@@ -13,6 +13,7 @@ import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,7 +34,7 @@ public class MainActivity extends AppCompatActivity  {
 
     private final String PREF_FILE_NAME = "Preferences";
     private final String DEFAULT_PATH   = "";
-    private final String PHOTO_NAME_PREFIX    = "Photo";
+    private final String PHOTO_NAME_PREFIX    = "PhotoTake";
     private final String PHOTO_NAME_SUFFIX    = ".jpg";
 
     private String path_To_Picture = DEFAULT_PATH;
@@ -51,21 +52,22 @@ public class MainActivity extends AppCompatActivity  {
         setSupportActionBar(toolbar);
         toolbar.setVisibility(View.VISIBLE);
 
+
         //Lets remove the title
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        getPref(); // get preferences if there are any
+        //getPref(); // get preferences if there are any
 
         Bundle extras = getIntent().getExtras();
 
         if (extras != null) {
             //add custom settings from settings activity
         }
-        if (!path_To_Picture.equals(DEFAULT_PATH)) { //if the current path is not ""
-            DisplayMetrics m = new DisplayMetrics();
+       /* if (!path_To_Picture.equals(DEFAULT_PATH)) { //if the current path is not ""
+
             changeBackgroundImage(Camera_Helpers.loadAndScaleImage(path_To_Picture,
-                    m.heightPixels, m.widthPixels));
-        }
+                    background.getHeight(), background.getWidth()));
+        }*/
 
 
     }
@@ -93,9 +95,12 @@ public class MainActivity extends AppCompatActivity  {
                 Intent shareIntent = new Intent();
                 shareIntent.setAction(Intent.ACTION_SEND);
 
+                shareIntent.putExtra(Intent.EXTRA_EMAIL, "jack.may.12@cnu.edu");
                 shareIntent.putExtra(Intent.EXTRA_TITLE, R.string.shareTitle);
                 shareIntent.putExtra(Intent.EXTRA_SUBJECT, R.string.sharemessage);
-                shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(path_To_Picture));
+                File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+                File temp       = new File(storageDir, PHOTO_NAME_PREFIX+PHOTO_NAME_SUFFIX);
+                shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(temp));
                 shareIntent.setType("image/jpg");
 
                 startActivity(shareIntent);
@@ -132,9 +137,10 @@ public class MainActivity extends AppCompatActivity  {
     public void takePhoto(View view) throws IOException {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-        File image      = File.createTempFile(PHOTO_NAME_PREFIX, PHOTO_NAME_SUFFIX, storageDir);
-        //Uri  output     = Uri.fromFile(image);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT,image);
+        File image      = new File(storageDir,PHOTO_NAME_PREFIX+PHOTO_NAME_SUFFIX);//File.createTempFile(PHOTO_NAME_PREFIX, PHOTO_NAME_SUFFIX, storageDir);
+        Uri  output     = Uri.fromFile(image);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT,output);
+        Log.e("Take", image.getPath());
 
         startActivityForResult(intent, TAKE_PICTURE);
     }
@@ -158,17 +164,21 @@ public class MainActivity extends AppCompatActivity  {
            switch (resultCode) {
                case RESULT_OK:
                    removeSavedPhoto();
-                   currentImage = data.getData();
-                   File tempFile = new File(currentImage.getPath());
+                   //currentImage = data.getData();
+
+                   File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
 
 
-                   path_To_Picture = tempFile.getAbsolutePath();
+                   File tempFile = new File(storageDir,PHOTO_NAME_PREFIX+PHOTO_NAME_SUFFIX);
+                   Log.e("Take2", tempFile.getPath());
+
+                   path_To_Picture = tempFile.getPath();
 
 
                    //path_To_Picture = data.getData().getPath();
                    //File picture = new File(data.getData().getPath());
-                  // int targetW  = background.getWidth();
-                   //int targetH  = background.getHeight();
+                    int targetW  = background.getWidth();
+                    int targetH  = background.getHeight();
 
                    // get dimensions of bitmap
                    BitmapFactory.Options bmOps = new BitmapFactory.Options();
@@ -188,11 +198,11 @@ public class MainActivity extends AppCompatActivity  {
                    //Bitmap bitmap = BitmapFactory.decodeFile(path_To_Picture, bmOps);
 
                    DisplayMetrics metrics = new DisplayMetrics();
-                   Bitmap bitmap = Camera_Helpers.loadAndScaleImage(path_To_Picture, metrics.heightPixels, metrics.widthPixels);
+                   Bitmap bitmap = Camera_Helpers.loadAndScaleImage(path_To_Picture, targetH, targetW);
                    //background.setImageBitmap(bitmap);
                    changeBackgroundImage(bitmap);
                    Camera_Helpers.saveProcessedImage(bitmap, path_To_Picture);
-                   savePref();
+                   //savePref();
                    break;
 
                case RESULT_CANCELED:
