@@ -129,6 +129,7 @@ public class MainActivity extends AppCompatActivity  {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
         File image      = File.createTempFile(PHOTO_NAME_PREFIX,PHOTO_NAME_SUFFIX,storageDir);
+        path_To_Picture = image.getPath();
         Uri  output     = Uri.fromFile(image);
         intent.putExtra(MediaStore.EXTRA_OUTPUT,output);
 
@@ -148,11 +149,13 @@ public class MainActivity extends AppCompatActivity  {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
         if (requestCode == TAKE_PICTURE) {
            switch (resultCode) {
                case RESULT_OK:
                    removeSavedPhoto();
-                   path_To_Picture = data.getData().getPath();
+
                    //File picture = new File(data.getData().getPath());
                    int targetW  = background.getWidth();
                    int targetH  = background.getHeight();
