@@ -12,6 +12,8 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -164,15 +166,15 @@ public class MainActivity extends AppCompatActivity  {
 
                    //path_To_Picture = data.getData().getPath();
                    //File picture = new File(data.getData().getPath());
-                   int targetW  = background.getWidth();
-                   int targetH  = background.getHeight();
+                  // int targetW  = background.getWidth();
+                   //int targetH  = background.getHeight();
 
                    // get dimensions of bitmap
                    BitmapFactory.Options bmOps = new BitmapFactory.Options();
                    bmOps.inJustDecodeBounds = true;
                    BitmapFactory.decodeFile(path_To_Picture);
-                   int photoW = bmOps.outWidth;
-                   int photoH = bmOps.outHeight;
+                   //int photoW = bmOps.outWidth;
+                   //int photoH = bmOps.outHeight;
 
                    // Determine how much to scale down the image
                    //int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
@@ -183,7 +185,9 @@ public class MainActivity extends AppCompatActivity  {
                    //bmOps.inPurgeable = true;
 
                    //Bitmap bitmap = BitmapFactory.decodeFile(path_To_Picture, bmOps);
-                   Bitmap bitmap = Camera_Helpers.loadAndScaleImage(path_To_Picture, targetH, targetW);
+
+                   DisplayMetrics metrics = new DisplayMetrics();
+                   Bitmap bitmap = Camera_Helpers.loadAndScaleImage(path_To_Picture, metrics.heightPixels, metrics.widthPixels);
                    //background.setImageBitmap(bitmap);
                    changeBackgroundImage(bitmap);
                    Camera_Helpers.saveProcessedImage(bitmap, path_To_Picture);
