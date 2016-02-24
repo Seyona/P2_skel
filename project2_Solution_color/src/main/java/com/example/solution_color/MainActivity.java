@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity  {
             //add custom settings from settings activity
         }
         if (!path_To_Picture.equals(DEFAULT_PATH)) { //if the current path is not ""
-            DisplayMetrics m = new DisplayMetrics()
+            DisplayMetrics m = new DisplayMetrics();
             changeBackgroundImage(Camera_Helpers.loadAndScaleImage(path_To_Picture,
                     m.heightPixels, m.widthPixels));
         }
