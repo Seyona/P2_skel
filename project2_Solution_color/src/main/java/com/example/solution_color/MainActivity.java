@@ -129,7 +129,6 @@ public class MainActivity extends AppCompatActivity  {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
         File image      = File.createTempFile(PHOTO_NAME_PREFIX,PHOTO_NAME_SUFFIX,storageDir);
-        path_To_Picture = image.getPath();
         Uri  output     = Uri.fromFile(image);
         intent.putExtra(MediaStore.EXTRA_OUTPUT,output);
 
@@ -155,9 +154,12 @@ public class MainActivity extends AppCompatActivity  {
            switch (resultCode) {
                case RESULT_OK:
                    removeSavedPhoto();
+                   Uri image = data.getData();
+                   path_To_Picture = image.getPath();
 
+                   //path_To_Picture = data.getData().getPath();
                    //File picture = new File(data.getData().getPath());
-                   int targetW  = background.getWidth();
+                   /*int targetW  = background.getWidth();
                    int targetH  = background.getHeight();
 
                    // get dimensions of bitmap
@@ -176,7 +178,14 @@ public class MainActivity extends AppCompatActivity  {
                    //bmOps.inPurgeable = true;
 
                    Bitmap bitmap = BitmapFactory.decodeFile(path_To_Picture, bmOps);
-                   background.setImageBitmap(bitmap);
+                   background.setImageBitmap(bitmap);*/
+
+                   Bitmap bitmap = null;
+                   try {
+                       bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), image);
+                   } catch (IOException e) {
+                       e.printStackTrace();
+                   }
                    Camera_Helpers.saveProcessedImage(bitmap, path_To_Picture);
                    savePref();
                    break;
