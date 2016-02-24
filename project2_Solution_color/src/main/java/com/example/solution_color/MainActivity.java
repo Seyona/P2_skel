@@ -162,7 +162,7 @@ public class MainActivity extends AppCompatActivity  {
 
                    //path_To_Picture = data.getData().getPath();
                    //File picture = new File(data.getData().getPath());
-                   /*int targetW  = background.getWidth();
+                   int targetW  = background.getWidth();
                    int targetH  = background.getHeight();
 
                    // get dimensions of bitmap
@@ -181,14 +181,8 @@ public class MainActivity extends AppCompatActivity  {
                    //bmOps.inPurgeable = true;
 
                    Bitmap bitmap = BitmapFactory.decodeFile(path_To_Picture, bmOps);
-                   background.setImageBitmap(bitmap);*/
+                   background.setImageBitmap(bitmap);
 
-                   Bitmap bitmap = null;
-                   try {
-                       bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), image);
-                   } catch (IOException e) {
-                       e.printStackTrace();
-                   }
                    Camera_Helpers.saveProcessedImage(bitmap, path_To_Picture);
                    savePref();
                    break;
