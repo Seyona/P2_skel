@@ -130,8 +130,8 @@ public class MainActivity extends AppCompatActivity  {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
         File image      = File.createTempFile(PHOTO_NAME_PREFIX,PHOTO_NAME_SUFFIX,storageDir);
-        Uri  output     = Uri.fromFile(image);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT,output);
+        //Uri  output     = Uri.fromFile(image);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT,image);
 
         startActivityForResult(intent, TAKE_PICTURE);
     }
@@ -155,8 +155,10 @@ public class MainActivity extends AppCompatActivity  {
            switch (resultCode) {
                case RESULT_OK:
                    removeSavedPhoto();
-                   Uri image = data.getData();
-                   File tempFile = new File(image.getPath());
+                   currentImage = data.getData();
+                   File tempFile = new File(currentImage.getPath());
+
+
                    path_To_Picture = tempFile.getAbsolutePath();
 
 
@@ -181,8 +183,8 @@ public class MainActivity extends AppCompatActivity  {
                    //bmOps.inPurgeable = true;
 
                    Bitmap bitmap = BitmapFactory.decodeFile(path_To_Picture, bmOps);
-                   background.setImageBitmap(bitmap);
-
+                   //background.setImageBitmap(bitmap);
+                   changeBackgroundImage(bitmap);
                    Camera_Helpers.saveProcessedImage(bitmap, path_To_Picture);
                    savePref();
                    break;
