@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity  {
         toolbar.setVisibility(View.VISIBLE);
 
         //Lets remove the title
-        //getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         getPref(); // get preferences if there are any
 
