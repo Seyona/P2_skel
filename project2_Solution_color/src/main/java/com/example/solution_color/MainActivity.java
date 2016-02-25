@@ -104,8 +104,8 @@ public class MainActivity extends AppCompatActivity  {
                 shareIntent.setAction(Intent.ACTION_SEND);
 
                 shareIntent.putExtra(Intent.EXTRA_EMAIL, "jack.may.12@cnu.edu");
-                shareIntent.putExtra(Intent.EXTRA_TITLE, R.string.shareTitle);
-                shareIntent.putExtra(Intent.EXTRA_SUBJECT, R.string.sharemessage);
+                shareIntent.putExtra(Intent.EXTRA_TITLE, message_title);
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT, message_body);
                 File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
                 File temp       = new File(storageDir, PHOTO_NAME_PREFIX+PHOTO_NAME_SUFFIX);
                 shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(temp));
