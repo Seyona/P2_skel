@@ -70,12 +70,12 @@ public class MainActivity extends AppCompatActivity {
         /**
          * could be prone to breaking app
          */
-        path_To_Picture = prefs.getString("pic_path","");
+       /* path_To_Picture = prefs.getString("pic_path","");
 
         if (new File(path_To_Picture).exists()) { //if the current path is not ""
             changeBackgroundImage(Camera_Helpers.loadAndScaleImage(path_To_Picture,
                     background.getHeight(), background.getWidth()));
-        }
+        }*/
 
 
     }
