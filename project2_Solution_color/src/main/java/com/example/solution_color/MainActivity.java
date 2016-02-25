@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
 
                 Log.e("title", message_title);
                 Log.e("body", message_body);
-                shareIntent.putExtra(Intent.EXTRA_EMAIL, "jack.may.12@cnu.edu");
+                //shareIntent.putExtra(Intent.EXTRA_EMAIL, "jack.may.12@cnu.edu");
                 shareIntent.putExtra(Intent.EXTRA_TITLE, message_title);
                 shareIntent.putExtra(Intent.EXTRA_SUBJECT, message_body);
                 File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
