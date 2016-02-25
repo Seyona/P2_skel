@@ -113,8 +113,8 @@ public class MainActivity extends AppCompatActivity {
                 //Log.e("title", message_title);
                 //Log.e("body", message_body);
                 //shareIntent.putExtra(Intent.EXTRA_EMAIL, "jack.may.12@cnu.edu");
-                shareIntent.putExtra(Intent.EXTRA_TITLE, message_title);
-                shareIntent.putExtra(Intent.EXTRA_SUBJECT, message_body);
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT, message_title);
+                shareIntent.putExtra(Intent.EXTRA_TEXT, message_body);
                 File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
                 File temp = new File(storageDir, PHOTO_NAME_PREFIX + PHOTO_NAME_SUFFIX);
                 if (temp.exists()) {
@@ -196,14 +196,14 @@ public class MainActivity extends AppCompatActivity {
                     //Log.e("Take2", tempFile.getPath());
 
                     path_To_Picture = tempFile.getPath();
-                    SharedPreferences.Editor edit = prefs.edit();
+                   // SharedPreferences.Editor edit = prefs.edit();
 
                     /**
                      * could cause something to break...
                      */
 
-                    edit.putString("pic_path",path_To_Picture);
-                    edit.apply();
+                   // edit.putString("pic_path",path_To_Picture);
+                   // edit.apply();
 
                     //path_To_Picture = data.getData().getPath();
                     //File picture = new File(data.getData().getPath());
