@@ -27,7 +27,11 @@ public class SettingsActivity extends Activity {
 
 		MyPreferences myPref = new MyPreferences();
 
+
+
 	  }
+
+
 	
 	public static class PrefsFragment extends PreferenceFragment {
 
@@ -40,9 +44,11 @@ public class SettingsActivity extends Activity {
 			addPreferencesFromResource(R.xml.preferences);
 
 		}
+
+
 	}
 
-	public class MyPreferences extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
+	public static class MyPreferences extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 		private final String PREF_FILE_NAME = "Preferences";
 
 		@Override
@@ -73,6 +79,19 @@ public class SettingsActivity extends Activity {
 				editor.putString("Sat_bar", sharedPreferences.getString("Sat_bar", getString(R.string.color_value)));
 			}
 			editor.apply();
+		}
+
+		@Override
+		public void onResume() {
+			super.onResume();
+			getPreferenceManager().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+
+		}
+
+		@Override
+		public void onPause() {
+			getPreferenceManager().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
+			super.onPause();
 		}
 
 	}
