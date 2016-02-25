@@ -67,21 +67,19 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
+        /**
+         * could be prone to breaking app
+         */
+        path_To_Picture = prefs.getString("pic_path","");
 
-       /* if (!path_To_Picture.equals(DEFAULT_PATH)) { //if the current path is not ""
-
+        if (new File(path_To_Picture).exists()) { //if the current path is not ""
             changeBackgroundImage(Camera_Helpers.loadAndScaleImage(path_To_Picture,
                     background.getHeight(), background.getWidth()));
-        }*/
+        }
 
 
     }
 
-   /* @Override
-    protected void onResume() {
-        super.onResume();
-
-    }*/
 
 
     @Override
@@ -112,8 +110,8 @@ public class MainActivity extends AppCompatActivity {
                 Intent shareIntent = new Intent();
                 shareIntent.setAction(Intent.ACTION_SEND);
 
-                Log.e("title", message_title);
-                Log.e("body", message_body);
+                //Log.e("title", message_title);
+                //Log.e("body", message_body);
                 //shareIntent.putExtra(Intent.EXTRA_EMAIL, "jack.may.12@cnu.edu");
                 shareIntent.putExtra(Intent.EXTRA_TITLE, message_title);
                 shareIntent.putExtra(Intent.EXTRA_SUBJECT, message_body);
@@ -131,8 +129,8 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.colorize:
 
-                Log.e("color_val", "" + color);
-                Log.e("sketch_val", "" + sketch);
+               // Log.e("color_val", "" + color);
+                //Log.e("sketch_val", "" + sketch);
                 currentBg = BitMap_Helpers.copyBitmap(background.getDrawable());
                 sketchedBG = BitMap_Helpers.thresholdBmp(currentBg, sketch);
                 coloredBG = BitMap_Helpers.colorBmp(currentBg, color);
@@ -141,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
 
                 break;
             case R.id.black_and_white:
-                Log.e("sketch_val", "" + sketch);
+                //Log.e("sketch_val", "" + sketch);
                 currentBg = BitMap_Helpers.copyBitmap(background.getDrawable());//BitMap_Helpers.copyBitmap(background.getDrawable());
                 sketchedBG = BitMap_Helpers.thresholdBmp(currentBg, sketch);
                 changeBackgroundImage(sketchedBG);
@@ -194,23 +192,28 @@ public class MainActivity extends AppCompatActivity {
                     //currentImage = data.getData();
 
                     File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-
-
                     File tempFile = new File(storageDir, PHOTO_NAME_PREFIX + PHOTO_NAME_SUFFIX);
                     //Log.e("Take2", tempFile.getPath());
 
                     path_To_Picture = tempFile.getPath();
+                    SharedPreferences.Editor edit = prefs.edit();
 
+                    /**
+                     * could cause something to break...
+                     */
+
+                    edit.putString("pic_path",path_To_Picture);
+                    edit.apply();
 
                     //path_To_Picture = data.getData().getPath();
                     //File picture = new File(data.getData().getPath());
                     int targetW = background.getWidth();
                     int targetH = background.getHeight();
 
-                    // get dimensions of bitmap
-                    BitmapFactory.Options bmOps = new BitmapFactory.Options();
-                    bmOps.inJustDecodeBounds = true;
-                    BitmapFactory.decodeFile(path_To_Picture);
+                    //get dimensions of bitmap
+                    //BitmapFactory.Options bmOps = new BitmapFactory.Options();
+                    //bmOps.inJustDecodeBounds = true;
+                    //BitmapFactory.decodeFile(path_To_Picture);
                     //int photoW = bmOps.outWidth;
                     //int photoH = bmOps.outHeight;
 
@@ -224,12 +227,9 @@ public class MainActivity extends AppCompatActivity {
 
                     //Bitmap bitmap = BitmapFactory.decodeFile(path_To_Picture, bmOps);
 
-                    DisplayMetrics metrics = new DisplayMetrics();
                     Bitmap bitmap = Camera_Helpers.loadAndScaleImage(path_To_Picture, targetH, targetW);
-                    //background.setImageBitmap(bitmap);
                     changeBackgroundImage(bitmap);
                     Camera_Helpers.saveProcessedImage(bitmap, path_To_Picture);
-                    //savePref();
                     break;
 
                 case RESULT_CANCELED:
@@ -248,30 +248,6 @@ public class MainActivity extends AppCompatActivity {
         background.setScaleType(ImageView.ScaleType.FIT_XY);
     }
 
-
-
-
-   /* public void getPref() {
-        //SharedPreferences settings = getSharedPreferences(PREF_FILE_NAME, MODE_PRIVATE);//PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-
-        //SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        //path_To_Picture = settings.getString("Current Picture Path", DEFAULT_PATH);
-
-
-
-
-    }
-
-
-
-    /*public void savePref() {
-        SharedPreferences settings = getSharedPreferences(PREF_FILE_NAME, MODE_PRIVATE);
-
-        SharedPreferences.Editor editor = settings.edit();
-
-        editor.putString("Current Picture Path", path_To_Picture);
-        editor.commit();
-    }*/
 }
 
 
