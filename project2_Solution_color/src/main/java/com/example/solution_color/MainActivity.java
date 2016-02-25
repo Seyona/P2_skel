@@ -93,11 +93,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Bitmap currentBg, sketchedBG, coloredBG;
-        //String tempStr = prefs.getString("Sat_bar", getString(R.string.color_value));
+
         color = prefs.getInt("Sat_bar", Integer.parseInt(getString(R.string.color_value)));
-        //tempStr = prefs.getString("Sketch_bar", getString(R.string.sketch_value));
         sketch = prefs.getInt("Sketch_bar", Integer.parseInt(getString(R.string.sketch_value)));
-        //tempStr = "";
 
         message_body = prefs.getString("share_text", getString(R.string.sharemessage));
         message_title = prefs.getString("share_subject", getString(R.string.shareTitle));
