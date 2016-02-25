@@ -72,11 +72,11 @@ public class SettingsActivity extends Activity {
 			}
 
 			if (key.equals("Sketch_bar")){
-				editor.putString("Sketch_bar", sharedPreferences.getString("Sketch_bar", getString(R.string.sketch_value)));
+				editor.putInt("Sketch_bar", Integer.parseInt(sharedPreferences.getString("Sketch_bar", getString(R.string.sketch_value))));
 			}
 
 			if (key.equals("Sat_bar")) {
-				editor.putString("Sat_bar", sharedPreferences.getString("Sat_bar", getString(R.string.color_value)));
+				editor.putInt("Sat_bar", Integer.parseInt(sharedPreferences.getString("Sat_bar", getString(R.string.color_value))));
 			}
 			editor.apply();
 		}
