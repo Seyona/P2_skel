@@ -9,6 +9,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -40,6 +41,11 @@ public class MainActivity extends AppCompatActivity  {
     private String path_To_Picture = DEFAULT_PATH;
     private Uri    currentImage;
 
+    private Integer color = 0;//Integer.parseInt(this.getString(R.string.color_value));
+    private Integer sketch = 0;//Integer.parseInt(this.getString(R.string.sketch_value));
+    private String  message_title = "";
+    private String  message_body  = "";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,13 +62,8 @@ public class MainActivity extends AppCompatActivity  {
         //Lets remove the title
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        //getPref(); // get preferences if there are any
+        getPref(); // get preferences if there are any
 
-        Bundle extras = getIntent().getExtras();
-
-        if (extras != null) {
-            //add custom settings from settings activity
-        }
        /* if (!path_To_Picture.equals(DEFAULT_PATH)) { //if the current path is not ""
 
             changeBackgroundImage(Camera_Helpers.loadAndScaleImage(path_To_Picture,
@@ -70,6 +71,12 @@ public class MainActivity extends AppCompatActivity  {
         }*/
 
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getPref();
     }
 
 
@@ -84,8 +91,7 @@ public class MainActivity extends AppCompatActivity  {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Bitmap currentBg, sketchedBG, coloredBG;
-        Integer color = Integer.parseInt(this.getString(R.string.color_value));
-        Integer sketch = Integer.parseInt(this.getString(R.string.sketch_value));
+
         switch (item.getItemId()) {
 
             case R.id.action_settings:
@@ -225,18 +231,31 @@ public class MainActivity extends AppCompatActivity  {
 
 
     public void getPref() {
-        SharedPreferences settings = getSharedPreferences(PREF_FILE_NAME, MODE_PRIVATE);
+        SharedPreferences settings = getSharedPreferences(PREF_FILE_NAME, MODE_APPEND);//PreferenceManager.getDefaultSharedPreferences(this);
 
-        path_To_Picture = settings.getString("Current Picture Path", DEFAULT_PATH);
+        //path_To_Picture = settings.getString("Current Picture Path", DEFAULT_PATH);
+        String temp = settings.getString("Sat_bar", getString(R.string.color_value));
+        color  = Integer.parseInt(temp);
+        temp   = settings.getString("Sketch_bar", getString(R.string.sketch_value));
+        sketch = Integer.parseInt(temp);
+        temp = "";
+
+        message_body  = settings.getString("share_text", getString(R.string.sharemessage));
+        message_title = settings.getString("share_subject", getString(R.string.shareTitle));
+
+
+
     }
 
+
+
     public void savePref() {
-        SharedPreferences settings = getSharedPreferences(PREF_FILE_NAME, MODE_PRIVATE);
+        /*SharedPreferences settings = getSharedPreferences(PREF_FILE_NAME, MODE_PRIVATE);
 
         SharedPreferences.Editor editor = settings.edit();
 
         editor.putString("Current Picture Path", path_To_Picture);
-        editor.commit();
+        editor.commit();*/
     }
 }
 

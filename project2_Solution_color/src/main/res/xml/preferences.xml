@@ -1,11 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
-    <EditTextPreference android:title="Your Name"
+    <!--<EditTextPreference android:title="Your Name"
         android:key="username"
         android:summary="Please provide your username"></EditTextPreference>
     <CheckBoxPreference android:title="Sample Checkbox Pref"
         android:defaultValue="false"
         android:summary="Longwinded explanation goes here"
-        android:key="applicationUpdates" />
+        android:key="applicationUpdates" /> -->
+
+    <PreferenceCategory android:title="Share Options" />
+    <EditTextPreference android:title="Share Subject"
+        android:key="share_subject"
+        android:summary="This is the subject of the message you would like to share"
+        android:defaultValue="@string/shareTitle"/>
+
+    <EditTextPreference android:title="Share Text"
+        android:key="share_text"
+        android:summary="This is the text you would like to share"
+        android:defaultValue="@string/sharemessage"/>
+
+    <PreferenceCategory android:title="Rendering Options"/>
+    <com.example.helpers.SeekBarPreference
+        android:title="Sketchiness"
+        android:summary="Set BW threshold, higher numbers correspond to less detail and a whiter image"
+        android:key="Sketch_bar"
+        android:max="100"
+        android:defaultValue="@string/sketch_value"/>
+    <com.example.helpers.SeekBarPreference
+        android:title="Saturation"
+        android:summary="Set color saturation, higher numbers correspond to more colorful images"
+        android:key="Sat_bar"
+        android:max="100"
+        android:defaultValue="@string/color_value"/>
     
 </PreferenceScreen>
