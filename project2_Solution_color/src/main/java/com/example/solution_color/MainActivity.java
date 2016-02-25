@@ -231,7 +231,7 @@ public class MainActivity extends AppCompatActivity  {
 
 
     public void getPref() {
-        SharedPreferences settings = getSharedPreferences(PREF_FILE_NAME, MODE_APPEND);//PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences settings = getSharedPreferences(PREF_FILE_NAME, MODE_PRIVATE);//PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 
         //path_To_Picture = settings.getString("Current Picture Path", DEFAULT_PATH);
         String temp = settings.getString("Sat_bar", getString(R.string.color_value));

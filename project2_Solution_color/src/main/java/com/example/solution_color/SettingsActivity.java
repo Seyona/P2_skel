@@ -25,6 +25,8 @@ public class SettingsActivity extends Activity {
 		mFragmentTransaction.replace(android.R.id.content, mPrefsFragment);
 		mFragmentTransaction.commit();
 
+		MyPreferences myPref = new MyPreferences();
+
 	  }
 	
 	public static class PrefsFragment extends PreferenceFragment {
@@ -50,6 +52,7 @@ public class SettingsActivity extends Activity {
 			PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
 		}
 
+
 		@Override
 		public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 			SharedPreferences settings = getSharedPreferences(PREF_FILE_NAME, MODE_APPEND);
@@ -69,7 +72,7 @@ public class SettingsActivity extends Activity {
 			if (key.equals("Sat_bar")) {
 				editor.putString("Sat_bar", sharedPreferences.getString("Sat_bar", getString(R.string.color_value)));
 			}
-			editor.commit();
+			editor.apply();
 		}
 
 	}
