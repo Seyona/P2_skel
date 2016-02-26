@@ -70,12 +70,12 @@ public class MainActivity extends AppCompatActivity {
         /**
          * could be prone to breaking app
          */
-        path_To_Picture = prefs.getString("pic_path","");
+       /* path_To_Picture = prefs.getString("pic_path","");
 
         if (new File(path_To_Picture).exists()) { //if the current path is not ""
             changeBackgroundImage(Camera_Helpers.loadAndScaleImage(path_To_Picture,
                     background.getHeight(), background.getWidth()));
-        }
+        }*/
 
 
     }
@@ -113,16 +113,17 @@ public class MainActivity extends AppCompatActivity {
                 //Log.e("title", message_title);
                 //Log.e("body", message_body);
                 //shareIntent.putExtra(Intent.EXTRA_EMAIL, "jack.may.12@cnu.edu");
-                shareIntent.putExtra(Intent.EXTRA_TITLE, message_title);
-                shareIntent.putExtra(Intent.EXTRA_SUBJECT, message_body);
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT, message_title);
+                shareIntent.putExtra(Intent.EXTRA_TEXT, message_body);
                 File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
                 File temp = new File(storageDir, PHOTO_NAME_PREFIX + PHOTO_NAME_SUFFIX);
-                if (temp.exists()) {
+                if (background.getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.gutters).getConstantState())) {
                     shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(temp));
                     shareIntent.setType("image/jpg");
                     startActivity(shareIntent);
                 } else {
                     Toast.makeText(MainActivity.this, "Please Take a photo before sharing", Toast.LENGTH_SHORT).show();
+                    shareIntent = null;
                 }
 
 
@@ -196,14 +197,14 @@ public class MainActivity extends AppCompatActivity {
                     //Log.e("Take2", tempFile.getPath());
 
                     path_To_Picture = tempFile.getPath();
-                    SharedPreferences.Editor edit = prefs.edit();
+                   // SharedPreferences.Editor edit = prefs.edit();
 
                     /**
                      * could cause something to break...
                      */
 
-                    edit.putString("pic_path",path_To_Picture);
-                    edit.apply();
+                   // edit.putString("pic_path",path_To_Picture);
+                   // edit.apply();
 
                     //path_To_Picture = data.getData().getPath();
                     //File picture = new File(data.getData().getPath());
