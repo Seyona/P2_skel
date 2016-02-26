@@ -117,14 +117,14 @@ public class MainActivity extends AppCompatActivity {
                 shareIntent.putExtra(Intent.EXTRA_TEXT, message_body);
                 File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
                 File temp = new File(storageDir, PHOTO_NAME_PREFIX + PHOTO_NAME_SUFFIX);
-                if (background.getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.gutters).getConstantState())) {
+                //if () {
                     shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(temp));
                     shareIntent.setType("image/jpg");
                     startActivity(shareIntent);
-                } else {
-                    Toast.makeText(MainActivity.this, "Please Take a photo before sharing", Toast.LENGTH_SHORT).show();
-                    shareIntent = null;
-                }
+                //} else {
+                  //  Toast.makeText(MainActivity.this, "Please Take a photo before sharing", Toast.LENGTH_SHORT).show();
+                   // shareIntent = null;
+                //}
 
 
                 break;
